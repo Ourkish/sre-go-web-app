@@ -67,7 +67,32 @@
   smtpUsername := "your.smtp.username"
   smtpPassword := "your.smtp.password"
   `````
-  
+## Potential Improvements
+
+- Continuous Integration & Deployment (CI/CD) :
+  Implement a CI/CD pipeline using tools like Jenkins, GitLab CI, or GitHub Actions. This pipeline would automatically build the Docker container, push it to a registry, and deploy it to the Kubernetes cluster whenever 
+  there are updates to the main branch of the repository.
+
+- Logging & Observability :
+  Integrate a centralized logging solution like Graylog or Loki to gather logs from the application and Kubernetes nodes.
+
+- Scalability :
+  Optimize the application's Kubernetes deployment to use Horizontal Pod Autoscaling. This ensures the application scales out based on CPU or memory usage.
+
+- Security Enhancements :
+  Implement Network Policies in Kubernetes to restrict the communication between pods.
+  Regularly scan Docker images for vulnerabilities, possibly using tools like Trivy or Clair.
+  Encrypt sensitive data using Kubernetes secrets.
+
+- High Availability :
+  If moving beyond Minikube, consider setting up a multi-node Kubernetes cluster across different zones to ensure high availability.
+
+- Backup & Disaster Recovery :
+  Set up regular backups of the Kubernetes cluster configuration and data. 
+  Document and periodically test a disaster recovery procedure.
+
+## Showcase :
+
 - Below are screenshots showcasing the results following the deployment and execution of the code.
 
   Deploy using Helm and Terraform :
