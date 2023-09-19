@@ -9,35 +9,30 @@
 
 ## Prerequisites
 
-- Linux workstation (I am using Ubuntu 20.04) with at least 15 Gb ram (r2-15 flavor on OVH) .
+- Linux workstation (I am using Debian12) with at least 4 Gb of ram.
   `````
   cat /etc/*release*
   `````
 - Install the following packages [curl, Docker, Minikube, kubectl, Helm, Terraform]:
   `````
-  sudo mkdir /opt/sre-web-app
-  sudo cd /opt/sre-web-app
-  git clone https://github.com/Ourkish/sre-web-app.git
+  sudo mkdir /home/debian/sre-web-app
+  sudo cd /home/debian/sre-web-app
+  git clone https://github.com/Ourkish/sre-go-web-app.git
   sudo chmod +x auto_install.sh
   sudo ./auto_install.sh
   `````
 - get the web app
-  in this lab we used a Java Web app (https://hub.docker.com/r/tkgregory/sample-metrics-application)
-
-- Ensure your Horizon account is prepared, then proceed to the 'Network' section. From there, access 'Security Group' and establish fresh rules that permit TCP, HTTP, and Ingress on 
-  ports 3000, 9090, and 30080. Set the authorization to '0.0.0.0/0' to enable browser-based checks on the instance's public IP.
+  The application is a Hello World web server with two path: / and /metrics.
+  The binary and its sources are located to /root
+  create a Dockerfile for the app and test it locally :
   
 ## Understanding the operation
 
 - Minikube provides a local Kubernetes environment where you can deploy and manage containerized applications using Kubernetes resources.
 - Docker containers can be built and pushed to container registries. Kubernetes can then pull these containers and deploy them as pods (the smallest deployable units in Kubernetes).
 - kubectl is used to interact with the Minikube Kubernetes cluster. You can create pods, services, deployments, and other Kubernetes resources using kubectl commands.
-- Helm simplifies the installation of complex applications in Kubernetes. Helm charts describe how to deploy applications, including the necessary Kubernetes resources. You can use 
-  Helm to install and manage applications 
-  in your Minikube cluster.
-- Terraform can manage Kubernetes resources in Minikube as well as other infrastructure resources outside of Kubernetes. It uses Terraform providers to interact with the Kubernetes API 
-  and provision resources like 
-  namespaces, secrets, and ConfigMaps.
+- Helm simplifies the installation of complex applications in Kubernetes. Helm charts describe how to deploy applications, including the necessary Kubernetes resources. You can use Helm to install and manage applications in your Minikube cluster.
+- Terraform can manage Kubernetes resources in Minikube as well as other infrastructure resources outside of Kubernetes. It uses Terraform providers to interact with the Kubernetes API and provision resources like namespaces, secrets, and ConfigMaps.
 
 ## In Practice
 
@@ -52,15 +47,15 @@
   
 - Allow EST/WEST traffic on exposed ports :
   `````
-  kubectl port-forward --address 141.94.106.42 service/grafana 3000:80 > /dev/null 2>&1
-  kubectl port-forward --address 141.94.106.42 service/prometheus-server 9090:80 > /dev/null 2>&1 &
-  kubectl port-forward --address 141.94.106.42 service/sample-metrics-app-service 30080:8080 > /dev/null 2>&1 &
+  kubectl port-forward --address 57.128.112.35 service/grafana 3000:80
+  kubectl port-forward --address 57.128.112.35 service/prometheus-server 9090:80
+  kubectl port-forward --address 57.128.112.35 svc/sre-hiring-service 8080:8080
   `````
 
 - Add a cron to check disk and to be notified by email if disk run's out of space :
   `````
   sudo vim /etc/crontab
-  0 * * * * /usr/bin/go run /home/ubuntu/sre-web-app/HealthChecks.go >> /var/log/HealthChecks.log 2>&1
+  */30 * * * * /home/debian/sre-web-app/healthchecks_app/healthchecks
   `````
 
   you can configure your creds for SMTP service here :
@@ -79,22 +74,23 @@
 
   ![deploy](https://github.com/Ourkish/sre-web-app/assets/67292535/9b5cdf6d-1465-459c-8f42-d3e8b31b8ec5)
 
-  
+  App metrics :
+
+  ![app_metrics](https://github.com/Ourkish/sre-web-app/assets/67292535/ba6dde2c-e924-48a6-806b-4a532617b31b)
+
   Application Monitoring :
   
-  ![jvm_dashboard](https://github.com/Ourkish/sre-web-app/assets/67292535/c888760b-1166-471e-925f-882cb5fda8b5)
+  ![go_metrics](https://github.com/Ourkish/sre-web-app/assets/67292535/0ccf2924-62ec-4f6f-be02-bb7065244781)
 
-  Deployment using terraform :
-  
-  ![pods](https://github.com/Ourkish/sre-web-app/assets/67292535/fe3d8bcc-05ce-4c50-ad74-7d34f094002d)
+  ![go_process](https://github.com/Ourkish/sre-web-app/assets/67292535/abeb9b48-7b5f-4813-b773-f76ae5ca802a)
 
-  App metrics after deployment :
+  show pods after deployment :
   
-  ![web_app_metrics](https://github.com/Ourkish/sre-web-app/assets/67292535/b89fd98e-b968-4d83-bb5d-7dee749bc0f7)
+  ![get_pods](https://github.com/Ourkish/sre-web-app/assets/67292535/88317871-704f-423e-aad2-044a46898682)
 
   Kubernetes Dashboard :
   
-  ![kube_dashboard](https://github.com/Ourkish/sre-web-app/assets/67292535/8762a72c-2ac2-47e4-a965-baf36bc6692a)
+  ![kub_metrics](https://github.com/Ourkish/sre-web-app/assets/67292535/d1a7a269-31da-43b4-816f-187bec36391b)
 
   To destroy the cluster use this command :
   `````
@@ -103,8 +99,3 @@
   you will be asked to confirme, if you agree to destroy you should see an output like this :
   
   ![destroy_cluster](https://github.com/Ourkish/sre-web-app/assets/67292535/f59a86f6-ebb8-4583-b93a-82ba823591c6)
-
-
-
-  
-  
