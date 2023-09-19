@@ -145,6 +145,3 @@ Document and periodically test a disaster recovery procedure.
   `````
   sudo terraform destroy
   `````
-  you will be asked to confirme, if you agree to destroy you should see an output like this :
-  
-  ![destroy_cluster](https://github.com/Ourkish/sre-web-app/assets/67292535/f59a86f6-ebb8-4583-b93a-82ba823591c6)
