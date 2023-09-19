@@ -35,6 +35,9 @@
 - kubectl is used to interact with the Minikube Kubernetes cluster. You can create pods, services, deployments, and other Kubernetes resources using kubectl commands.
 - Helm simplifies the installation of complex applications in Kubernetes. Helm charts describe how to deploy applications, including the necessary Kubernetes resources. You can use Helm to install and manage applications in your Minikube cluster.
 - Terraform can manage Kubernetes resources in Minikube as well as other infrastructure resources outside of Kubernetes. It uses Terraform providers to interact with the Kubernetes API and provision resources like namespaces, secrets, and ConfigMaps.
+- Prometheus is an open-source monitoring and alerting toolkit, Prometheus specializes in reliability monitoring in cloud-native environments. It scrapes metrics using a pull-based model from instrumented jobs and stores them in its time-series database.
+- Grafana is an open-source platform for monitoring and visualization. It excels in creating dashboards from various data sources, including Prometheus, transforming raw metrics into insightful visual representations.
+Together, Prometheus collects metrics while Grafana provides the visualization, offering a cohesive view of application and infrastructure performance.
 
 ## In Practice
 
