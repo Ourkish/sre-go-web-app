@@ -21,7 +21,8 @@
   sudo chmod +x auto_install.sh
   sudo ./auto_install.sh
   `````
-- get the web app
+- get the web app :
+
   The application is a Hello World web server with two path: / and /metrics.
   The binary and its sources are located to /root
   create a Dockerfile for the app and test it locally :
