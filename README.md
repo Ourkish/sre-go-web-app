@@ -45,9 +45,28 @@ Together, Prometheus collects metrics while Grafana provides the visualization, 
   Clone the project on your environement and run those commands (if not already done !) :
   `````
   git clone https://github.com/Ourkish/sre-web-app.git
-  sudo chmod +x dep_install.sh
+  sudo chmod +x auto_install.sh
   sudo ./auto_install.sh
-  sudo terraform apply
+  `````
+
+- build the web app and use a local registery :
+  `````
+  sudo usermod -aG docker $USER
+  eval $(minikube docker-env)
+  docker build -t sre-hiring:local .
+  `````
+  
+- if you want to try the app locally you can run :
+  `````
+  docker run --name sre-hiring-test -p 8080:8080 sre-hiring:local
+  curl http://localhost:8080/metrics
+  `````
+  
+- deploy the cluster using Terraform :
+  `````
+  terraform init
+  terraform plan
+  terraform apply
   `````
   
 - Allow EST/WEST traffic on exposed ports :
